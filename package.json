@@ -4,7 +4,8 @@
   "description": "Some BF Scripts",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "radioCSV": "node ./radio-folder-to-csv.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Ludobaka/bassfactory-scripts/issues"
   },
-  "homepage": "https://github.com/Ludobaka/bassfactory-scripts#readme"
+  "homepage": "https://github.com/Ludobaka/bassfactory-scripts#readme",
+  "dependencies": {
+    "minimist": "^1.2.5"
+  }
 }
