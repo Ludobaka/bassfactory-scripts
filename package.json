@@ -1,0 +1,19 @@
+{
+  "name": "bassfactory-scripts",
+  "version": "1.0.0",
+  "description": "Some BF Scripts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ludobaka/bassfactory-scripts.git"
+  },
+  "author": "Byeee",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ludobaka/bassfactory-scripts/issues"
+  },
+  "homepage": "https://github.com/Ludobaka/bassfactory-scripts#readme"
+}
