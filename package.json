@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Ludobaka/bassfactory-scripts#readme",
   "dependencies": {
+    "csv-writer": "^1.6.0",
     "minimist": "^1.2.5"
   }
 }

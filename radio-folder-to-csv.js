@@ -1,4 +1,5 @@
 const fs = require('fs');
+const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 
 const parseArgs = require('minimist');
 
@@ -39,12 +40,25 @@ if (require.main === module) {
   const argv = parseArgs(process.argv.slice(2));
 
   console.log('Convert some BF Radio Folder(s) to a CSV file');
-  console.log('Usage : node ./radio-folder-to-csv.js folder1 folder2 ...');
+  console.log('Usage : node ./radio-folder-to-csv.js --output=<outputFile> folder1 folder2 ...');
 
   const folders = argv._;
+  const outputFile = argv.output;
 
   const trackInfos = [];
   for (const folder of folders) {
     trackInfos.push(...musicCollectionModelFromFolder(folder));
   }
+
+  const csvWriter = createCsvWriter({
+    path: outputFile,
+    header: [
+      { id: 'artist', title: 'Artist' },
+      { id: 'trackname', title: 'Track Name' },
+      { id: 'label', title: 'Label' },
+      { id: 'album', title: 'Album' },
+    ]
+  });
+
+  csvWriter.writeRecords(trackInfos).then(() => console.log(`CSV written in ${outputFile}`));
 }
