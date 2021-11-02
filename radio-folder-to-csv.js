@@ -88,6 +88,5 @@ if (require.main === module) {
 
   const trackInfosWithPicked  = addPickedAttrToTracksInfos(trackInfos, trackPicks);
 
-  console.log(JSON.stringify(trackInfosWithPicked));
   writeTracksInfoToCSV(trackInfosWithPicked, outputFile);
 }
