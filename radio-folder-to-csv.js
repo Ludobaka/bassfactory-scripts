@@ -36,29 +36,58 @@ function musicCollectionModelFromFolder(musicFolder) {
   return trackInfos;
 }
 
-if (require.main === module) {
-  const argv = parseArgs(process.argv.slice(2));
-
-  console.log('Convert some BF Radio Folder(s) to a CSV file');
-  console.log('Usage : node ./radio-folder-to-csv.js --output=<outputFile> folder1 folder2 ...');
-
-  const folders = argv._;
-  const outputFile = argv.output;
-
-  const trackInfos = [];
-  for (const folder of folders) {
-    trackInfos.push(...musicCollectionModelFromFolder(folder));
-  }
-
+function writeTracksInfoToCSV(tracksInfo, outputFileName) {
   const csvWriter = createCsvWriter({
-    path: outputFile,
+    path: outputFileName,
     header: [
       { id: 'artist', title: 'Artist' },
       { id: 'trackname', title: 'Track Name' },
       { id: 'label', title: 'Label' },
       { id: 'album', title: 'Album' },
+      { id: 'picked', title: 'Picked' },
     ]
   });
 
-  csvWriter.writeRecords(trackInfos).then(() => console.log(`CSV written in ${outputFile}`));
+  csvWriter.writeRecords(tracksInfo).then(() => console.log(`CSV written in ${outputFileName}`));
+}
+
+function addPickedAttrToTracksInfos(trackInfos, trackPicks) {
+  return trackInfos.map(val => {
+    const isPicked = trackPicks.some(elem =>
+      elem.artist === val.artist && elem.trackname === val.trackname);
+
+    const newVal = Object.assign({}, val);
+
+    if (isPicked) {
+      newVal.picked = 'X';
+    } else {
+      newVal.picked = '';
+    }
+
+    return newVal;
+  });
+}
+
+if (require.main === module) {
+  const argv = parseArgs(process.argv.slice(2));
+
+  console.log('Convert some BF Radio Folder(s) to a CSV file');
+  console.log('Can also use a picks folder option to get a nice CSV output');
+  console.log('Usage : node ./radio-folder-to-csv.js --output=<outputFile> --picks=pickFolder folder1 folder2 ...');
+
+  const libraryFolders = argv._;
+  const picksFolder = argv.picks;
+  const outputFile = argv.output;
+
+  const trackInfos = [];
+  for (const folder of libraryFolders) {
+    trackInfos.push(...musicCollectionModelFromFolder(folder));
+  }
+
+  const trackPicks = musicCollectionModelFromFolder(picksFolder);
+
+  const trackInfosWithPicked  = addPickedAttrToTracksInfos(trackInfos, trackPicks);
+
+  console.log(JSON.stringify(trackInfosWithPicked));
+  writeTracksInfoToCSV(trackInfosWithPicked, outputFile);
 }
